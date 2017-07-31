@@ -1,7 +1,8 @@
 'use strict';
 
-var mongoose = require('mongoose');
-const ObjectId = MODULE("util").ObjectId;
+var mongoose = require('mongoose'),
+	ObjectId = mongoose.Schema.Types.ObjectId;
+
 const round = MODULE("util").round3;
 
 var articleSchema = mongoose.Schema({
