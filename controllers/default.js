@@ -9,7 +9,8 @@ function view_index() {
     var User = MODEL('TFamille').schema; 	// MODEL est un mot clé reconnu par Total.js , le module doit se trouver dans le repertoire modules
 
 	User.find(function(err, users) {		//find() methode de mongoDB pour rechercher 
-		self.view('index', users);			//Methode de Total.js qui permet d'executer l'index.html  
+		//self.view('index', users);			//Methode de Total.js qui permet d'executer l'index.html  
+		self.json(users);			//Methode de Total.js qui permet d'executer l'index.html  
 	});
 
 }
