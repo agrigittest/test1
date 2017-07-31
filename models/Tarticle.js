@@ -8,7 +8,7 @@ var articleSchema = mongoose.Schema({
     codeArticle: { type: Number, unique: true },
     libArticle: { type: String, trim: true },
     prix: { type: Number, set: round },
-    codeFamille: { type: ObjectId, ref: 'TFamille' }
+    codeFamille: { type: ObjectID, ref: 'TFamille' }
 });
 
 exports.schema = mongoose.model('TArticle', articleSchema);
