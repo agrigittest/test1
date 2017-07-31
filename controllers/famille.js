@@ -27,7 +27,7 @@ function view_unefamille(id) {
 
     //User.findById(id, "-_id CodeFamille libFamille", function(err, user) { //find() methode de mongoDB pour rechercher 
     //self.view('index', users);			//Methode de Total.js qui permet d'executer l'index.html  
-    User.findOne({ CodeFamille: id }, "-_id CodeFamille libFamille", function(err, user) {
+    User.findOne({ CodeFamille: parseInt(id) }, "-_id CodeFamille libFamille", function(err, user) {
 
         self.json(user); //Methode de Total.js qui permet d'executer l'index.html  
     });
