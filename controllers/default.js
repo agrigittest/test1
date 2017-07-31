@@ -1,7 +1,7 @@
 'use strict';
 
 exports.install = function() {
-    F.route('/famille', view_index);
+    F.route('/', view_index);
 };
 
 // Read all users
