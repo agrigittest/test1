@@ -4,7 +4,7 @@ var familleSchema = mongoose.Schema({
     CodeFamille: { type: Number, unique: true },
     libFamille: {
         type: String,
-        set: trim()
+        trim: true
     }
 })
 
