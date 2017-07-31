@@ -1,4 +1,5 @@
 'use strict';
+var mongoose = require('mongoose');
 
 function round(value, decimals) {
     if (!decimals) {
@@ -8,3 +9,13 @@ function round(value, decimals) {
         return 0;
     return Number(Math.round(value + 'e' + (decimals) + 'e-' + decimals));
 }
+
+exports.round3 = function(value) {
+    return round(value, 3);
+};
+
+exports.round2 = function(value) {
+    return round(value, 2);
+};
+
+exports.ObjectId = mongoose.Types.ObjectId;
