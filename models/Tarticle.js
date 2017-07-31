@@ -2,7 +2,7 @@
 
 var mongoose = require('mongoose');
 
-var round = MODULES("util").round;
+const round = MODULE("util").round3;
 
 var articleSchema = mongoose.Schema({
     codeArticle: { type: Number, unique: true },
