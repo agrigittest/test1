@@ -6,6 +6,9 @@
   "dependencies": {
     "async": "^2.5.0",
     "lodash": "^4.17.4",
+ "i18next": "latest",
+        "i18next-node-fs-backend": "latest",
+        "i18next-sprintf-postprocessor": "latest",
     "mongoose": "~4.9",
     "mongoose-timestamp": "0.5.0",
     "passport": "latest",
