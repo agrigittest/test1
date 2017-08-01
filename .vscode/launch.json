@@ -5,9 +5,15 @@
     "version": "0.2.0",
     "configurations": [{
         "type": "node",
+<<<<<<< HEAD
         "request": "launch",
         "name": "Launch Program",
         //"port": 40894
         "program": "${workspaceRoot}\\index.js"
+=======
+        "request": "attach",
+        "name": "Launch Program",
+        "port": 40894
+>>>>>>> b1cd7e112b5fa3a33d93562bfe5723f052b1ca32
     }]
 }
