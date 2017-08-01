@@ -7,6 +7,12 @@
     "async": "^2.5.0",
     "lodash": "^4.17.4",
     "mongoose": "~4.9",
+    "mongoose-timestamp": "0.5.0",
+    "passport": "latest",
+        "passport-google-oauth": "latest",
+        "passport-local": "latest",
+        "passport-localapikey": "latest",
+        "passport-oauth2": "latest",
     "total.js": "latest"
   },
   "scripts": {
