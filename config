@@ -3,3 +3,4 @@
 // This database uses also: https://github.com/totaljs/demo
 
 database                       : mongodb://192.168.1.129/agri-commerce
+//database                       : mongodb://127.0.0.1/agri-commerce
