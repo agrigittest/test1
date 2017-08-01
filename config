@@ -21,5 +21,4 @@ google-callback          : http://speedealing.symeos.net:8000/login/google/callb
 symeos-id                : 1052846639873-7lhqolitbk3fagv61p50om75a58occvq
 symeos-secret            : 6Ygp02V5G96hXYd0xU3SpsoZ
 symeos-callback          : http://speedealing.symeos.net:8000/login/symeos/callback
-default-language         : fr
-
+default-language         : es
