@@ -3,4 +3,24 @@
 // This database uses also: https://github.com/totaljs/demo
 
 database                       : mongodb://192.168.1.129/agri-commerce
+<<<<<<< HEAD
 //database                       : mongodb://127.0.0.1/agri-commerce
+=======
+
+// session cookie name
+cookie			 : agri
+secret			 : 1234qwerty
+sessionTimeout           : 360000
+token			 : 1234 
+
+// OAuth
+twitter-key              : 1XR69DKARYXqKdPucICQ
+twitter-secret           : fCnZjLFQ7M8MsNZT4ekVkxiMS8pgwyPk9N6ysmbzEQA
+twitter-callback         : http://127.0.0.1/login/twitter/callback/
+google-id                : 1052846639873-7lhqolitbk3fagv61p50om75a58occvq.apps.googleusercontent.com
+google-secret            : 6Ygp02V5G96hXYd0xU3SpsoZ
+google-callback          : http://speedealing.symeos.net:8000/login/google/callback
+symeos-id                : 1052846639873-7lhqolitbk3fagv61p50om75a58occvq
+symeos-secret            : 6Ygp02V5G96hXYd0xU3SpsoZ
+symeos-callback          : http://speedealing.symeos.net:8000/login/symeos/callback
+>>>>>>> 865e306827e0f09525942f87c5436ae41e0585ba

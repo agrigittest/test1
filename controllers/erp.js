@@ -1,4 +1,5 @@
-var _ = require('lodash'),
+var passport = require('passport'),
+    _ = require('lodash'),
     fs = require('fs'),
     path = require('path'),
     async = require('async');
@@ -20,8 +21,8 @@ exports.install = function() {
             angular = data;
     });
 
-    F.route('/erp/', view_erp);
-    //F.route('/erp/', view_redirect, ['unauthorize']);
+    F.route('/erp/', view_erp, ['authorize']);
+    F.route('/erp/', view_redirect, ['unauthorize']);
 };
 
 function view_redirect() {
