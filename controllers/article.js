@@ -2,6 +2,7 @@
 
 exports.install = function() {
     F.route('/article', view_index);
+
     F.route('/article', creationArticle, ['post', 'json']);
     F.route('/article/{id}', view_unArticle);
     F.route('/article/{id}', majArticle, ['put', 'json']);
@@ -24,6 +25,7 @@ function view_index() {
 
 }
 
+
 // Read all users
 function view_unArticle(id) {
 
@@ -31,7 +33,7 @@ function view_unArticle(id) {
     var articles = MODEL('TArticle').schema; // MODEL est un mot clé reconnu par Total.js , le module doit se trouver dans le repertoire modules
 
     articles.findOne({ _id: id })
-        .populate('codeFamille')
+        // .populate('codeFamille')
         .exec(function(err, art) {
             self.json(art); //Methode de Total.js qui permet d'executer l'index.html  
         });

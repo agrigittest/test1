@@ -12,7 +12,13 @@ MetronicApp.controller('ArticleController', ['$scope', '$rootScope', '$http', 'A
             //Parametres propre au module Angular qui faut initialiser
             //$rootScope.setting.layout.pageSidebarClosed = true;
             //$rootScope.setting.layout.pageBodySolid = false;
+            $http({
+                method: 'GET',
+                url: '/famille/select'
+            }).success(function(data, status) {
+                $scope.listfamille = data.data;
 
+            });
             //Appel à la méthode find afin d'afficher les familles
             $scope.findOne();
 
