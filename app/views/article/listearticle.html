@@ -1,0 +1,52 @@
+<div class="col-md-12">
+
+    <!-- BEGIN SAMPLE TABLE PORTLET-->
+    <div class="portlet light bordered">
+        <div class="portlet-title">
+            <div class="caption">
+                <i class="icon-social-dribbble font-green"></i>
+                <span class="caption-subject font-green bold uppercase">Article</span>
+            </div>
+            <div class="actions">
+                <!--<button type="button" class="btn blue" ng-click="create()">Nouveau</button>-->
+                <a class="btn btn-circle btn-icon-only btn-default" ui-sref="article.create">
+                    <i class="icon-cloud-upload"></i>
+                </a>
+
+            </div>
+        </div>
+        <div class="portlet-body">
+            <div class="table-scrollable">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th style="width: 70px">Code </th>
+                            <th> Libelle </th>
+                            <th> Famille </th>
+                            <th style="width:40px"> </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="article in articles">
+                            <!--                                                                           -->
+                            <td> <a ui-sref="article.show({id:article._id})"> {{article.codeArticle}} </a> </td>
+                            <td> {{article.libArticle}} </td>
+                            <td> {{article.codefamille.libFamille}} </td>
+                            <td>
+                                <a class="btn btn-circle btn-icon-only btn-default" confirmed-click="delete(article)" ng-confirm-click='Supprimer la famille {{article.libArticle}} ?'>
+                                    <i class="icon-trash"></i>
+                                </a>
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+    <!-- END SAMPLE TABLE PORTLET-->
+
+</div>
