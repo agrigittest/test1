@@ -21,7 +21,7 @@ MetronicApp.controller('ArticleController', ['$scope', '$rootScope', '$http', 'A
         //Méthode find qui utilise la ressource Famille,
         // Cette ressource va renvoyer les familles de la base
         $scope.findOne = function() {
-            FamillesRessource.get({
+            ArticlesRessource.get({
                 id: $rootScope.$stateParams.id
             }, function(data) {
                 console.log(data); //Affichage de la data dans la console du serveur
@@ -38,7 +38,7 @@ MetronicApp.controller('ArticleController', ['$scope', '$rootScope', '$http', 'A
             });
         };
         $scope.create = function() {
-            var article = new FamillesRessource($scope.article);
+            var article = new ArticlesRessource($scope.article);
             article.$save(function(data) {
                 console.log(data);
                 //Fonction qui transfère vers la page de modification du nouvel élément créé

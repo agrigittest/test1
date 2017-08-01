@@ -648,6 +648,24 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
             },
             controller: "ArticleListController"
         })
+        .state('article.show', {
+            parent: 'article',
+            url: "/{id:[0-9a-z]{24}}",
+            templateUrl: "/views/article/fiche.html",
+            data: {
+                pageTitle: 'Article'
+            },
+            controller: "ArticleController"
+        })
+        .state('article.create', {
+            parent: "article",
+            url: "/create.html",
+            templateUrl: "/views/article/fiche.html",
+            data: {
+                pageTitle: 'Nouvel article'
+            },
+            controller: "ArticleController"
+        })
         /*
          // AngularJS plugins
          .state('fileupload', {
