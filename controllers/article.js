@@ -25,7 +25,7 @@ function view_unArticle(id) {
     var self = this; // Permet de referencer le contexte si on change de niveau (Le fameux THAT .. principe de l'inception)
     var articles = MODEL('TArticle').schema; // MODEL est un mot clé reconnu par Total.js , le module doit se trouver dans le repertoire modules
 
-    articles.findOne({ codeArticle: parseInt(id) }, "-_id CodeArticle libArticle prix", function(err, art) {
+    articles.findOne({ codeArticle: parseInt(id) }, "-_id codeArticle libArticle prix", function(err, art) {
         self.json(art); //Methode de Total.js qui permet d'executer l'index.html  
     });
 
