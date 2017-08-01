@@ -42,7 +42,7 @@ MetronicApp.controller('ArticleController', ['$scope', '$rootScope', '$http', 'A
             article.$save(function(data) {
                 console.log(data);
                 //Fonction qui transfère vers la page de modification du nouvel élément créé
-                $rootScope.$state.go("article.show", { id: data._id });
+                $rootScope.$state.go("article.list");
             });
         };
 
