@@ -22,7 +22,7 @@ MetronicApp.controller('FamilleController', ['$scope', '$rootScope', '$http', 'F
         // Cette ressource va renvoyer les familles de la base
         $scope.findOne = function() {
             FamillesRessource.get({
-                Id: $rootScope.$stateParams.id
+                id: $rootScope.$stateParams.id
             }, function(data) {
                 console.log(data); //Affichage de la data dans la console du serveur
                 $scope.famille = data; // alimentation des données issues de la ressource Famille dans la variable familles
@@ -37,5 +37,15 @@ MetronicApp.controller('FamilleController', ['$scope', '$rootScope', '$http', 'F
                 $scope.findOne();
             });
         };
+        $scope.create = function() {
+            var famille = new FamillesRessource($scope.famille);
+            famille.$save(function(data) {
+                console.log(data);
+                //Fonction qui transfère vers la page de modification du nouvel élément créé
+                $rootScope.$state.go("famille.show", { id: data._id });
+            });
+        };
+
+
     }
 ]);

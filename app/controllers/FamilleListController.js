@@ -4,12 +4,12 @@ MetronicApp.controller('FamilleListController', ['$scope', '$rootScope', '$http'
     // Crée le controleur avec en 
     // premier paramètre le nom du controleur, 
     // un tableau de paramètre possibles  
-    // $scope =
-    // $rootScope =
-    // $http =
-    // Familles Ressource =
-    // $timeout
-    // $filter
+    // $scope = C'est la donnee utilisable dans le formulaire (DOM limité )
+    // $rootScope =  C'est une variable globale (Exemple la session)
+    // $http = 
+    // Familles Ressource = (pas de $ car c'est les notres... (pas ceux d'angular comme scope))
+    // $timeout =  
+    // $filter = 
 
     function($scope, $rootScope, $http, FamillesRessource) {
 
@@ -35,6 +35,12 @@ MetronicApp.controller('FamilleListController', ['$scope', '$rootScope', '$http'
                 console.log(data); //Affichage de la data dans la console du serveur
                 $scope.familles = data.data; // alimentation des données issues de la ressource Famille dans la variable familles
 
+            });
+        };
+        $scope.delete = function(famille) {
+            FamillesRessource.delete({ id: famille._id }, function(data) {
+                console.log(data);
+                $scope.find();
             });
         };
 

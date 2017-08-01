@@ -1,4 +1,5 @@
 <div class="col-md-6">
+    <button type="button" class="btn blue" ng-click="create()">Nouveau</button>
     <!-- BEGIN SAMPLE TABLE PORTLET-->
     <div class="portlet light bordered">
         <div class="portlet-title">
@@ -7,7 +8,8 @@
                 <span class="caption-subject font-green bold uppercase">Simple Table</span>
             </div>
             <div class="actions">
-                <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
+                <!--<button type="button" class="btn blue" ng-click="create()">Nouveau</button>-->
+                <a class="btn btn-circle btn-icon-only btn-default" ui-sref="famille.create">"
                     <i class="icon-cloud-upload"></i>
                 </a>
                 <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
@@ -25,21 +27,29 @@
                         <tr>
                             <th> Code Famille </th>
                             <th> Libelle </th>
+                            <th> </th>
 
                         </tr>
                     </thead>
                     <tbody>
                         <tr ng-repeat="famille in familles">
-
+                            <!--                                                                           -->
                             <td> <a ui-sref="famille.show({id:famille._id})"> {{famille.CodeFamille}} </a> </td>
                             <td> {{famille.libFamille}} </td>
+                            <td>
+                                <a class="btn btn-circle btn-icon-only btn-default" ng-click="delete(famille)">
+                                    <i class="icon-trash"></i>
+                                </a>
+                            </td>
 
                         </tr>
 
                     </tbody>
                 </table>
+
             </div>
         </div>
     </div>
     <!-- END SAMPLE TABLE PORTLET-->
+
 </div>
