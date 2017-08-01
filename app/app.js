@@ -648,6 +648,7 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
             },
             controller: "ArticleListController"
         })
+<<<<<<< HEAD
         // Stock
         .state('stock', {
             url: "/stock",
@@ -679,6 +680,25 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
                 pageTitle: 'Nouveau Stock'
             },
             controller: "StockController"
+=======
+        .state('article.show', {
+            parent: 'article',
+            url: "/{id:[0-9a-z]{24}}",
+            templateUrl: "/views/article/fiche.html",
+            data: {
+                pageTitle: 'Article'
+            },
+            controller: "ArticleController"
+        })
+        .state('article.create', {
+            parent: "article",
+            url: "/create.html",
+            templateUrl: "/views/article/fiche.html",
+            data: {
+                pageTitle: 'Nouvel article'
+            },
+            controller: "ArticleController"
+>>>>>>> 259c9e50b0ec4cb8128e8675ee804d82e5db3e85
         })
         /*
          // AngularJS plugins
