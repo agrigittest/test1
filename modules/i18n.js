@@ -48,7 +48,7 @@ Translation.prototype.translate = function(key, language, params) {
 Translation.prototype.load = function() {
     var namespaces = [];
 
-    fs.readdirSync('locales/fr').forEach((file) => namespaces.push(file.substr(0, file.indexOf(".json"))));
+    fs.readdirSync('locales/es').forEach((file) => namespaces.push(file.substr(0, file.indexOf(".json"))));
 
     i18n
         .use(FilesystemBackend)
@@ -63,7 +63,7 @@ Translation.prototype.load = function() {
                 // "allowMultiLoading": false,
                 "crossDomain": false
             },
-            supportedLngs: ['fr', 'en'],
+            supportedLngs: ['es'],
             load: 'languageOnly',
             lowerCaseLng: true,
             //preload: false,
@@ -72,7 +72,8 @@ Translation.prototype.load = function() {
             saveMissing: false,
             debug: false,
             saveMissingTo: 'fallback',
-            lng: CONFIG('default-language') || "en",
+            lng: 'es',
+            //lng: CONFIG('default-language') || "es",
             fallbackLng: "dev"
         }, function(err, t) {
             //F.emit('i18n');
@@ -87,7 +88,7 @@ exports.install = function(options) {
 
     var translation = new Translation();
 
-    translation.options = U.extend({ language: 'en' }, options);
+    translation.options = U.extend({ language: 'es' }, options);
     F.helpers.i18n = translation;
     translation.load();
 
