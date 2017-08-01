@@ -5,7 +5,8 @@ var familleSchema = mongoose.Schema({
     libFamille: {
         type: String,
         trim: true
-    }
+    },
+    ordre: { type: Number }
 })
 
 exports.schema = mongoose.model('TFamille', familleSchema);

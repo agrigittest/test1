@@ -1,19 +1,9 @@
 "use strict";
 
-MetronicApp.controller('FamilleListController', ['$scope', '$rootScope', '$http', 'FamillesRessource',
-    // Crée le controleur avec en 
-    // premier paramètre le nom du controleur, 
-    // un tableau de paramètre possibles  
-    // $scope =
-    // $rootScope =
-    // $http =
-    // Familles Ressource =
-    // $timeout
-    // $filter
-
+MetronicApp.controller('FamilleController', ['$scope', '$rootScope', '$http', 'FamillesRessource',
     function($scope, $rootScope, $http, FamillesRessource) {
 
-        $scope.familles = [];
+        $scope.famille = {};
 
         $scope.$on('$viewContentLoaded', function() {
             // initisalie core components
@@ -24,20 +14,28 @@ MetronicApp.controller('FamilleListController', ['$scope', '$rootScope', '$http'
             //$rootScope.setting.layout.pageBodySolid = false;
 
             //Appel à la méthode find afin d'afficher les familles
-            $scope.find();
+            $scope.findOne();
 
         });
 
         //Méthode find qui utilise la ressource Famille,
         // Cette ressource va renvoyer les familles de la base
-        $scope.find = function() {
-            FamillesRessource.query({}, function(data) {
+        $scope.findOne = function() {
+            FamillesRessource.get({
+                Id: $rootScope.$stateParams.id
+            }, function(data) {
                 console.log(data); //Affichage de la data dans la console du serveur
-                $scope.familles = data.data; // alimentation des données issues de la ressource Famille dans la variable familles
+                $scope.famille = data; // alimentation des données issues de la ressource Famille dans la variable familles
 
             });
         };
 
-
+        $scope.update = function() {
+            $scope.famille.$update(function(data) {
+                //réinjection des valeurs enregistres par le serveur dans le formulaire du client
+                console.log(data);
+                $scope.findOne();
+            });
+        };
     }
 ]);

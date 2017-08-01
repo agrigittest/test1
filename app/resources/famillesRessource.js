@@ -2,8 +2,8 @@
 //Fichier ressource qui va contenir les requêtes 
 
 //On utilise toujours MetronicApp pour Angular
-//Factory est l'inverse de controller 
-MetronicApp.factory("Familles", ['$resource',
+//Factory est un service
+MetronicApp.factory("FamillesRessource", ['$resource',
     function($resource) {
         return $resource('/famille/:Id', {
             Id: '@_id'

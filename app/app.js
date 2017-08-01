@@ -618,19 +618,13 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
         })
         .state('famille.show', {
             parent: 'famille',
-            url: "/{id:[0-9]{24}}",
+            url: "/{id:[0-9a-z]{24}}",
             templateUrl: "/views/famille/fiche.html",
             data: {
                 pageTitle: 'Famille'
             },
             controller: "FamilleController"
-        })
-        .state('famille.show.detail', {
-            url: "/detail",
-            templateUrl: "/views/famille/detail.html",
-            data: { pageTitle: 'Famille' }
-        })
-        .state('famille.create', {
+        }).state('famille.create', {
             parent: "famille",
             url: "/create.html",
             templateUrl: "/views/famille/detail.html",
