@@ -23,26 +23,17 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th> # </th>
                             <th> Code Famille </th>
                             <th> Libelle </th>
 
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
+                        <tr ng-repeat="famille in familles">
 
-                            <td> 1 </td>
-                            <td> Mark </td>
-                            <td> 1 </td>
-                            <td> makr124 </td>
-                            <td>
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-default">Left</button>
-                                    <button type="button" class="btn btn-default">Middle</button>
-                                    <button type="button" class="btn btn-default">Right</button>
-                                </div>
-                            </td>
+                            <td> <a ui-sref="famille.show({id:famille._id})"> {{famille.CodeFamille}} </a> </td>
+                            <td> {{famille.libFamille}} </td>
+
                         </tr>
 
                     </tbody>
