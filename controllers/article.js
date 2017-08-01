@@ -6,7 +6,7 @@ exports.install = function() {
 
 };
 
-// Read all users
+// Read all articles
 function view_index() {
 
     var self = this; // Permet de referencer le contexte si on change de niveau (Le fameux THAT .. principe de l'inception)
