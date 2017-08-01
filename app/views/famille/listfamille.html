@@ -37,7 +37,7 @@
                             <td> <a ui-sref="famille.show({id:famille._id})"> {{famille.CodeFamille}} </a> </td>
                             <td> {{famille.libFamille}} </td>
                             <td>
-                                <a class="btn btn-circle btn-icon-only btn-default" ng-click="delete(famille)">
+                                <a class="btn btn-circle btn-icon-only btn-default" confirmed-click="delete(famille)" ng-confirm-click='Supprimer la famille {{famille.libFamille}} ?'>
                                     <i class="icon-trash"></i>
                                 </a>
                             </td>
