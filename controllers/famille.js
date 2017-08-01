@@ -11,6 +11,7 @@ DELETE : Supprime une ressource
 
 exports.install = function() {
     F.route('/famille', view_listFamille);
+    F.route('/famille/select', selectFamille);
     F.route('/famille', creationFamille, ['post', 'json']);
     F.route('/famille/{id}', view_unefamille);
     F.route('/famille/{id}', majFamille, ['put', 'json']);
@@ -30,7 +31,19 @@ function view_listFamille() {
     });
 
 }
+// Read all users
+function selectFamille() {
 
+    var self = this; // Permet de referencer le contexte si on change de niveau (Le fameux THAT .. principe de l'inception)
+    var User = MODEL('TFamille').schema; // MODEL est un mot clé reconnu par Total.js , le module doit se trouver dans le repertoire modules
+
+    User.find({}, "_id libFamille", function(err, familles) { //find() methode de mongoDB pour rechercher 
+        //self.view('index', users);			//Methode de Total.js qui permet d'executer l'index.html  
+        self.json({ data: familles, count: familles.length });
+
+    });
+
+}
 // Read all users
 function view_unefamille(id) {
 
