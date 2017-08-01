@@ -4,6 +4,12 @@
 
 database                       : mongodb://192.168.1.129/agri-commerce
 
+// session cookie name
+cookie			 : agri
+secret			 : 1234qwerty
+sessionTimeout           : 360000
+token			 : 1234 
+
 // OAuth
 twitter-key              : 1XR69DKARYXqKdPucICQ
 twitter-secret           : fCnZjLFQ7M8MsNZT4ekVkxiMS8pgwyPk9N6ysmbzEQA

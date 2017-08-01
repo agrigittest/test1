@@ -95,7 +95,7 @@ var UserSchema = new Schema({
     externalConnect: { type: Boolean, default: false },
     right_menu: { type: Boolean, default: true },
     home: String,
-    societe: { type: Schema.Types.ObjectId, ref: 'Customers' }, // TODO rename to supplier
+    //societe: { type: Schema.Types.ObjectId, ref: 'Customers' }, // TODO rename to supplier
     multiEntities: { type: Boolean, default: false }, // Access to all entities ?
 
     kanbanSettings: {
@@ -122,7 +122,7 @@ var UserSchema = new Schema({
     }],
 
     ID: { type: Number, unique: true },
-    relatedEmployee: { type: ObjectId, ref: 'Employees', default: null },
+    //relatedEmployee: { type: ObjectId, ref: 'Employees', default: null },
     imports: {
         fileName: { type: String, default: '' },
         filePath: { type: String, default: '' },

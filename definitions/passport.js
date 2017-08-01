@@ -35,13 +35,14 @@ passport.use(new LocalStrategy({
         query.email = login.toLowerCase();
     else
         query.username = login.toLowerCase();
+console.log(query);
 
     User.findOne(query, "username email password entity NewConnection")
         //.populate("societe", "id name Status")
         .exec(function(err, user) {
-            if (err) {
+            if (err) 
                 return done(err);
-            }
+            
             console.log(user);
             if (!user) {
                 return done(null, false, {
