@@ -648,6 +648,38 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
             },
             controller: "ArticleListController"
         })
+        // Stock
+        .state('stock', {
+            url: "/stock",
+            abstract: true,
+            templateUrl: "/views/famille/index.html"
+        })
+        .state('stock.list', {
+            url: "",
+            templateUrl: "/views/stock/liststock.html",
+            data: {
+                pageTitle: 'Liste du stock'
+            },
+            controller: "StockListController"
+        })
+        .state('stock.show', {
+            parent: 'stock',
+            url: "/{id:[0-9a-z]{24}}",
+            templateUrl: "/views/stock/fiche.html",
+            data: {
+                pageTitle: 'Stock'
+            },
+            controller: "StockController"
+        })
+        .state('stock.create', {
+            parent: "stock",
+            url: "/create.html",
+            templateUrl: "/views/stock/fiche.html",
+            data: {
+                pageTitle: 'Nouveau Stock'
+            },
+            controller: "StockController"
+        })
         /*
          // AngularJS plugins
          .state('fileupload', {
