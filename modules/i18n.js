@@ -63,7 +63,7 @@ Translation.prototype.load = function() {
                 // "allowMultiLoading": false,
                 "crossDomain": false
             },
-            //supportedLngs: ['fr-fr', 'en-us'],
+            supportedLngs: ['fr', 'en'],
             load: 'languageOnly',
             lowerCaseLng: true,
             //preload: false,
