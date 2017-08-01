@@ -28,7 +28,7 @@ var MetronicApp = angular.module("MetronicApp", [
     'angular.filter'
 ]);
 /* Configure ocLazyLoader(refer: https://github.com/ocombe/ocLazyLoad) */
-MetronicApp.config(['$ocLazyLoadProvider', function($ocLazyLoadProvider) {
+MetronicApp.config(['$ocLazyLoadProvider', function ($ocLazyLoadProvider) {
     $ocLazyLoadProvider.config({
         // global configs go here
     });
@@ -73,7 +73,7 @@ MetronicApp.config(['$ocLazyLoadProvider', function($ocLazyLoadProvider) {
  **/
 
 //AngularJS v1.3.x workaround for old style controller declarition in HTML
-MetronicApp.config(['$controllerProvider', function($controllerProvider) {
+MetronicApp.config(['$controllerProvider', function ($controllerProvider) {
     // this option might be handy for migrating old apps, but please don't use it
     // in new ones!
     $controllerProvider.allowGlobals();
@@ -86,13 +86,13 @@ MetronicApp.config(['$controllerProvider', function($controllerProvider) {
 
 //Setting HTML5 Location Mode
 MetronicApp.config(['$locationProvider',
-    function($locationProvider) {
+    function ($locationProvider) {
         $locationProvider.hashPrefix("!");
     }
 ]);
 // Add Body for DELETE request
 MetronicApp.config(['$httpProvider',
-    function($httpProvider) {
+    function ($httpProvider) {
         $httpProvider.defaults.headers.delete = {
             "Content-Type": "application/json;charset=utf-8"
         };
@@ -100,15 +100,15 @@ MetronicApp.config(['$httpProvider',
 ]);
 
 MetronicApp.config(['$httpProvider',
-    function($httpProvider) {
-        $httpProvider.interceptors.push(function($q) {
+    function ($httpProvider) {
+        $httpProvider.interceptors.push(function ($q) {
             return {
-                'response': function(response) {
+                'response': function (response) {
                     //Will only be called for HTTP up to 300
                     //console.log(response);
                     return response;
                 },
-                'responseError': function(rejection) {
+                'responseError': function (rejection) {
                     switch (rejection.status) {
                         case 401:
                             //location.replace("/login");
@@ -126,34 +126,40 @@ MetronicApp.config(['$httpProvider',
     }
 ]);
 
-MetronicApp.factory('notifyToastr', ['$q', 'toastr', function($q, toastr) {
+MetronicApp.factory('notifyToastr', ['$q', 'toastr', function ($q, toastr) {
     var notifyToastr = {
         /*request: function (config) {
          config.requestTimestamp = new Date().getTime();
          return config;
          },*/
-        response: function(response) {
+        response: function (response) {
             if (response.data && response.data.errorNotify) {
                 // Draw Notify
-                toastr.error(response.data.errorNotify.message, response.data.errorNotify.title || 'Error', { timeOut: 10000, progressBar: true });
+                toastr.error(response.data.errorNotify.message, response.data.errorNotify.title || 'Error', {
+                    timeOut: 10000,
+                    progressBar: true
+                });
                 return $q.reject(response); // Reject response
             }
 
             if (response.data && response.data.successNotify) {
                 // Draw Notify information
-                toastr.success(response.data.successNotify.message, response.data.successNotify.title || 'Error', { timeOut: 5000, progressBar: true });
+                toastr.success(response.data.successNotify.message, response.data.successNotify.title || 'Error', {
+                    timeOut: 5000,
+                    progressBar: true
+                });
             }
             return response;
         }
     };
     return notifyToastr;
 }]);
-MetronicApp.config(['$httpProvider', function($httpProvider) {
+MetronicApp.config(['$httpProvider', function ($httpProvider) {
     $httpProvider.interceptors.push('notifyToastr');
 }]);
 
 /* Setup global settings */
-MetronicApp.factory('settings', ['$rootScope', function($rootScope) {
+MetronicApp.factory('settings', ['$rootScope', function ($rootScope) {
     // supported languages
     var settings = {
         layout: {
@@ -169,21 +175,32 @@ MetronicApp.factory('settings', ['$rootScope', function($rootScope) {
 }]);
 /* Setup App Main Controller */
 MetronicApp.controller('AppController', ['$scope', '$rootScope', '$http', '$location', 'dialogs', 'websocketService', '$notification',
-    function($scope, $rootScope, $http, $location, dialogs, websocketService, $notification) {
-        $rootScope.noteStatus = [
-            { id: "note-info", name: "Info" },
-            { id: "note-warning", name: "Warning" },
-            { id: "note-danger", name: "Danger" },
-            { id: "note-success", name: "Success" }
+    function ($scope, $rootScope, $http, $location, dialogs, websocketService, $notification) {
+        $rootScope.noteStatus = [{
+                id: "note-info",
+                name: "Info"
+            },
+            {
+                id: "note-warning",
+                name: "Warning"
+            },
+            {
+                id: "note-danger",
+                name: "Danger"
+            },
+            {
+                id: "note-success",
+                name: "Success"
+            }
         ];
 
         // accept notification
         $notification.requestPermission()
-            .then(function(permission) {
+            .then(function (permission) {
                 //console.log(permission); // default, granted, denied
             });
 
-        var login = function(userId) {
+        var login = function (userId) {
             //console.log(userId);
             if ($location.$$protocol == "http")
                 websocketService.login('ws://' + $location.host() + ':' + $location.port() + '/erp/websocket/', userId);
@@ -196,7 +213,7 @@ MetronicApp.controller('AppController', ['$scope', '$rootScope', '$http', '$loca
         $http({
             method: 'POST',
             url: '/session'
-        }).success(function(data, status) {
+        }).success(function (data, status) {
             //console.log(data);
             $rootScope.login = data.user; // User Profile
             $rootScope.entity = data.user.entity; // Entity profile
@@ -209,7 +226,7 @@ MetronicApp.controller('AppController', ['$scope', '$rootScope', '$http', '$loca
 
         });
 
-        $rootScope.setEntity = function(entity) {
+        $rootScope.setEntity = function (entity) {
             $rootScope.entity = entity;
         };
 
@@ -217,29 +234,32 @@ MetronicApp.controller('AppController', ['$scope', '$rootScope', '$http', '$loca
         $http({
             method: 'GET',
             url: '/erp/api/entity/select'
-        }).success(function(data, status) {
+        }).success(function (data, status) {
             //console.log(data);
             $rootScope.entityList = data;
             $rootScope.entityListAll = data.slice(); // Copy array
-            $rootScope.entityListAll.push({ id: "ALL", name: "ALL" });
+            $rootScope.entityListAll.push({
+                id: "ALL",
+                name: "ALL"
+            });
         });
 
         // Get Entity list
         $http({
             method: 'GET',
             url: '/erp/api/languages'
-        }).success(function(data, status) {
+        }).success(function (data, status) {
             //console.log(data);
             $rootScope.languages = data.data;
         });
 
         $rootScope._language = 0;
-        $rootScope.setLanguage = function(idx) {
+        $rootScope.setLanguage = function (idx) {
             $rootScope._language = idx;
         };
 
         // Return url Image
-        $rootScope.getImage = function(model, data) {
+        $rootScope.getImage = function (model, data) {
             if (data)
                 return "/erp/api/file/" + model + "/" + data;
             else
@@ -261,7 +281,7 @@ MetronicApp.controller('AppController', ['$scope', '$rootScope', '$http', '$loca
         };
 
         // Calcul la somme d'une liste
-        $rootScope.getTotal = function(data, key) {
+        $rootScope.getTotal = function (data, key) {
             var total = 0;
 
             if (data)
@@ -280,17 +300,17 @@ MetronicApp.controller('AppController', ['$scope', '$rootScope', '$http', '$loca
             replace(/%20/g, (pctEncodeSpaces ? '%20' : '+'));
         }
 
-        $rootScope.buildUrl = function(url, params) {
+        $rootScope.buildUrl = function (url, params) {
             if (!params)
                 return url;
             var parts = [];
-            angular.forEach(params, function(value, key) {
+            angular.forEach(params, function (value, key) {
                 if (value === null || angular.isUndefined(value))
                     return;
                 if (!angular.isArray(value))
                     value = [value];
 
-                angular.forEach(value, function(v) {
+                angular.forEach(value, function (v) {
                     if (angular.isObject(v)) {
                         v = angular.toJson(v);
                     }
@@ -300,8 +320,8 @@ MetronicApp.controller('AppController', ['$scope', '$rootScope', '$http', '$loca
             return url + ((url.indexOf('?') == -1) ? '?' : '&') + parts.join('&');
         };
 
-        $rootScope.loadUsers = function() {
-            return $http.get('/erp/api/employees/getForDd').then(function(res) {
+        $rootScope.loadUsers = function () {
+            return $http.get('/erp/api/employees/getForDd').then(function (res) {
                 //console.log(res.data);
                 $rootScope.userList = res.data;
                 //return res.data;
@@ -309,13 +329,13 @@ MetronicApp.controller('AppController', ['$scope', '$rootScope', '$http', '$loca
         };
 
 
-        $scope.$on('$viewContentLoaded', function() {
+        $scope.$on('$viewContentLoaded', function () {
             Metronic.initComponents(); // init core components
             //Layout.init(); //  Init entire layout(header, footer, sidebar, etc) on page load if the partials included in server side instead of loading with ng-include directive 
         });
 
         // Global function to do autocomplete
-        $rootScope.AutoComplete = function(val, url, entity) {
+        $rootScope.AutoComplete = function (val, url, entity) {
             return $http.post(url, {
                 take: 50, // limit
                 entity: entity,
@@ -325,7 +345,7 @@ MetronicApp.controller('AppController', ['$scope', '$rootScope', '$http', '$loca
                         value: val
                     }]
                 }
-            }).then(function(res) {
+            }).then(function (res) {
                 console.log(res.data);
                 return res.data;
             });
@@ -342,18 +362,18 @@ MetronicApp.controller('AppController', ['$scope', '$rootScope', '$http', '$loca
 ]);
 
 /** Send Emailing */
-MetronicApp.controller('sendEmailCtrl', ['$scope', '$modalInstance', 'data', function($scope, $modalInstance, data) {
+MetronicApp.controller('sendEmailCtrl', ['$scope', '$modalInstance', 'data', function ($scope, $modalInstance, data) {
     //-- Variables --//
 
     $scope.email = data.email;
 
     //-- Methods --//
 
-    $scope.cancel = function() {
+    $scope.cancel = function () {
         $modalInstance.dismiss('Canceled');
     }; // end cancel
 
-    $scope.send = function() {
+    $scope.send = function () {
         $modalInstance.close($scope.email);
     }; // end save
 
@@ -367,10 +387,10 @@ MetronicApp.controller('sendEmailCtrl', ['$scope', '$modalInstance', 'data', fun
  ***/
 /* Setup Layout Part - Header */
 MetronicApp.controller('HeaderController', ['$scope', '$rootScope', '$http', '$notification', /*'socket',*/
-    function($scope, $rootScope, $http, $notification) {
+    function ($scope, $rootScope, $http, $notification) {
         $scope.ticketCpt = 0;
         $scope.tasksCpt = 0;
-        $scope.$on('$includeContentLoaded', function() {
+        $scope.$on('$includeContentLoaded', function () {
             Layout.initHeader(); // init header
         });
 
@@ -390,17 +410,17 @@ MetronicApp.controller('HeaderController', ['$scope', '$rootScope', '$http', '$n
          });
         });*/
 
-        $scope.ticketCounter = function() {
+        $scope.ticketCounter = function () {
             $http({
                 method: 'GET',
                 url: '/api/ticket?count=1'
             }).
-            success(function(data, status) {
+            success(function (data, status) {
                 $scope.ticketCpt = data.cpt;
             });
         };
 
-        $rootScope.$on('login', function() {
+        $rootScope.$on('login', function () {
             $http({
                 method: 'GET',
                 url: '/erp/api/task/count',
@@ -408,14 +428,14 @@ MetronicApp.controller('HeaderController', ['$scope', '$rootScope', '$http', '$n
                     query: "MYTASK",
                     user: $rootScope.login._id
                 }
-            }).success(function(data, status) {
+            }).success(function (data, status) {
                 $scope.tasksCpt = data.count;
             });
             $scope.online = true;
         });
 
         // refresh task counter
-        $scope.$on('websocket', function(e, type, data) {
+        $scope.$on('websocket', function (e, type, data) {
             //console.log(data);
             //console.log(type);
 
@@ -426,7 +446,7 @@ MetronicApp.controller('HeaderController', ['$scope', '$rootScope', '$http', '$n
                 var notification = $notification(data.title, data.message);
 
                 if (data.url)
-                    var deregister = notification.$on('click', function() {
+                    var deregister = notification.$on('click', function () {
                         $rootScope.$state.go(data.url.module, data.url.params);
                     });
 
@@ -441,7 +461,7 @@ MetronicApp.controller('HeaderController', ['$scope', '$rootScope', '$http', '$n
                         query: "MYTASK",
                         user: $rootScope.login._id
                     }
-                }).success(function(data, status) {
+                }).success(function (data, status) {
                     $scope.tasksCpt = data.count;
                 });
             if (type === 'symeosnet') {
@@ -462,23 +482,23 @@ MetronicApp.controller('HeaderController', ['$scope', '$rootScope', '$http', '$n
 ]);
 /* Setup Layout Part - Sidebar */
 MetronicApp.controller('SidebarController', ['$scope', '$rootScope', '$http',
-    function($scope, $rootScope, $http) {
+    function ($scope, $rootScope, $http) {
         $scope.menus = {};
         $scope.menuTasks = [];
         $rootScope.showSearchInput = true;
 
-        $scope.$on('$includeContentLoaded', function() {
+        $scope.$on('$includeContentLoaded', function () {
             Layout.initSidebar(); // init sidebar
             $http({
                 method: 'GET',
                 url: '/erp/api/menus'
-            }).success(function(data, status) {
+            }).success(function (data, status) {
                 $scope.menus = data;
                 //console.log(data, status);
             });
         });
 
-        $rootScope.$on('login', function() {
+        $rootScope.$on('login', function () {
             $http({
                 method: 'GET',
                 url: '/api/task',
@@ -487,13 +507,13 @@ MetronicApp.controller('SidebarController', ['$scope', '$rootScope', '$http',
                     query: 'TODAYMYRDV',
                     user: $rootScope.login._id
                 }
-            }).success(function(data, status) {
+            }).success(function (data, status) {
                 $scope.menuTasks = data;
                 //console.log(data);
             });
         });
 
-        $scope.searchQuery = function() {
+        $scope.searchQuery = function () {
             if ($scope.searchQueryItem.length) {
                 $rootScope.searchQuery = {
                     lastname: $scope.searchQueryItem
@@ -508,32 +528,509 @@ MetronicApp.controller('SidebarController', ['$scope', '$rootScope', '$http',
     }
 ]);
 /* Setup Layout Part - Quick Sidebar */
-MetronicApp.controller('QuickSidebarController', ['$scope', function($scope) {
-    $scope.$on('$includeContentLoaded', function() {
-        setTimeout(function() {
+MetronicApp.controller('QuickSidebarController', ['$scope', function ($scope) {
+    $scope.$on('$includeContentLoaded', function () {
+        setTimeout(function () {
             QuickSidebar.init(); // init quick sidebar        
         }, 2000)
     });
 }]);
 
 /* Setup Layout Part - Theme Panel */
-MetronicApp.controller('ThemePanelController', ['$scope', function($scope) {
-    $scope.$on('$includeContentLoaded', function() {
+MetronicApp.controller('ThemePanelController', ['$scope', function ($scope) {
+    $scope.$on('$includeContentLoaded', function () {
         Demo.init(); // init theme panel
     });
 }]);
 /* Setup Layout Part - Footer */
-MetronicApp.controller('FooterController', ['$scope', function($scope) {
-    $scope.$on('$includeContentLoaded', function() {
+MetronicApp.controller('FooterController', ['$scope', function ($scope) {
+    $scope.$on('$includeContentLoaded', function () {
         Layout.initFooter(); // init footer
     });
 }]);
 /* Setup Rounting For All Pages */
-MetronicApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
-    // Redirect any unmatched url
-    $urlRouterProvider.otherwise("/");
-    $stateProvider
+MetronicApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
+// Redirect any unmatched url
+$urlRouterProvider.otherwise("/");
+$stateProvider
     // Dashboard
+<<<<<<< HEAD
+    .state('home', {
+        url: "/",
+        templateUrl: "/views/home/index.html",
+        data: {
+            pageTitle: 'Home Page'
+        },
+        controller: "HomeController",
+        resolve: {
+            deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+                return $ocLazyLoad.load({
+                    name: 'MetronicApp',
+                    insertBefore: '#ng_load_plugins_before', // load the above css files before a LINK element with this ID. Dynamic CSS files must be loaded between core and theme css files
+                    files: [
+                        '/controllers/HomeController.js'
+                    ]
+                });
+            }]
+        }
+    })
+    // Dashboard
+    .state('dashboard', {
+        url: "/dashboard.html",
+        templateUrl: "/views/home/dashboard.html",
+        data: {
+            pageTitle: 'Dashboard'
+        },
+        controller: "DashboardController",
+        resolve: {
+            deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+                return $ocLazyLoad.load({
+                    name: 'MetronicApp',
+                    insertBefore: '#ng_load_plugins_before', // load the above css files before a LINK element with this ID. Dynamic CSS files must be loaded between core and theme css files
+                    files: [
+                        '/assets/admin/pages/css/tasks.css',
+                        '/assets/global/plugins/jquery.sparkline.min.js',
+                        //'/assets/admin/pages/scripts/index3.js',
+                        '/assets/admin/pages/scripts/tasks.js',
+                        '/controllers/DashboardController.js'
+                    ]
+                });
+            }]
+        }
+    })
+    // Error
+    .state('error', {
+        url: "/error",
+        abstract: true,
+        templateUrl: "/views/error/index.html",
+        resolve: {
+            deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+                return $ocLazyLoad.load({
+                    name: 'MetronicApp',
+                    insertBefore: '#ng_load_plugins_before', // load the above css files before a LINK element with this ID. Dynamic CSS files must be loaded between core and theme css files
+                    files: [
+                        '/assets/admin/pages/css/error.css'
+                    ]
+                });
+            }]
+        }
+    })
+    .state('error.show', {
+        parent: "error",
+        url: "/{id:[0-9]{3}}",
+        templateUrl: "/views/error/fiche.html",
+        data: {
+            pageTitle: 'Erreur'
+        }
+    })
+    // Famille
+    .state('famille', {
+        url: "/famille",
+        abstract: true,
+        templateUrl: "/views/famille/index.html"
+    })
+    .state('famille.list', {
+        url: "",
+        templateUrl: "/views/famille/listfamille.html",
+        data: {
+            pageTitle: 'Liste des familles'
+        },
+        controller: "FamilleListController"
+    })
+    .state('famille.show', {
+        parent: 'famille',
+        url: "/{id:[0-9a-z]{24}}",
+        templateUrl: "/views/famille/fiche.html",
+        data: {
+            pageTitle: 'Famille'
+        },
+        controller: "FamilleController"
+    })
+    .state('famille.create', {
+        parent: "famille",
+        url: "/create.html",
+        templateUrl: "/views/famille/fiche.html",
+        data: {
+            pageTitle: 'Nouvelle offre'
+        },
+        controller: "FamilleController"
+    })
+    // Article
+    .state('article', {
+        url: "/article",
+        abstract: true,
+        templateUrl: "/views/article/index.html"
+    })
+    .state('article.list', {
+        url: "",
+        templateUrl: "/views/article/listearticle.html",
+        data: {
+            pageTitle: 'Liste des articles'
+        },
+        controller: "ArticleListController"
+    })
+    // Stock
+    .state('stock', {
+        url: "/stock",
+        abstract: true,
+        templateUrl: "/views/famille/index.html"
+    })
+    .state('stock.list', {
+        url: "",
+        templateUrl: "/views/stock/liststock.html",
+        data: {
+            pageTitle: 'Liste du stock'
+        },
+        controller: "StockListController"
+    })
+    .state('stock.show', {
+        parent: 'stock',
+        url: "/{id:[0-9a-z]{24}}",
+        templateUrl: "/views/stock/fiche.html",
+        data: {
+            pageTitle: 'Stock'
+        },
+        controller: "StockController"
+    })
+    .state('stock.create', {
+        parent: "stock",
+        url: "/create.html",
+        templateUrl: "/views/stock/fiche.html",
+        data: {
+            pageTitle: 'Nouveau Stock'
+        },
+        controller: "StockController"
+    })
+
+    .state('article.show', {
+        parent: 'article',
+        url: "/{id:[0-9a-z]{24}}",
+        templateUrl: "/views/article/fiche.html",
+        data: {
+            pageTitle: 'Article'
+        },
+        controller: "ArticleController"
+    })
+    .state('article.create', {
+        parent: "article",
+        url: "/create.html",
+        templateUrl: "/views/article/fiche.html",
+        data: {
+            pageTitle: 'Nouvel article'
+        },
+        controller: "ArticleController"
+
+    });
+/*
+ // AngularJS plugins
+ .state('fileupload', {
+ url: "/file_upload.html",
+ templateUrl: "/views/file_upload.html",
+ data: {pageTitle: 'AngularJS File Upload', pageSubTitle: 'angularjs file upload'},
+ controller: "GeneralPageController",
+ resolve: {
+ deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+ return $ocLazyLoad.load([{
+ name: 'angularFileUpload',
+ files: [
+ '/assets/global/plugins/angularjs/plugins/angular-file-upload/angular-file-upload.min.js'
+ ]
+ }, {
+ name: 'MetronicApp',
+ files: [
+ '/controllers/GeneralPageController.js'
+ ]
+ }]);
+ }]
+ }
+ })
+ 
+ // UI Select
+ .state('uiselect', {
+ url: "/ui_select.html",
+ templateUrl: "/views/ui_select.html",
+ data: {pageTitle: 'AngularJS Ui Select', pageSubTitle: 'select2 written in angularjs'},
+ controller: "UISelectController",
+ resolve: {
+ deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+ return $ocLazyLoad.load([{
+ name: 'ui.select',
+ insertBefore: '#ng_load_plugins_before', // load the above css files before '#ng_load_plugins_before'
+ files: [
+ '/assets/global/plugins/angularjs/plugins/ui-select/select.min.css',
+ '/assets/global/plugins/angularjs/plugins/ui-select/select.min.js'
+ ]
+ }, {
+ name: 'MetronicApp',
+ files: [
+ '/controllers/UISelectController.js'
+ ]
+ }]);
+ }]
+ }
+ })
+ 
+ // UI Bootstrap
+ .state('uibootstrap', {
+ url: "/ui_bootstrap.html",
+ templateUrl: "/views/ui_bootstrap.html",
+ data: {pageTitle: 'AngularJS UI Bootstrap', pageSubTitle: 'bootstrap components written in angularjs'},
+ controller: "GeneralPageController",
+ resolve: {
+ deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+ return $ocLazyLoad.load([{
+ name: 'MetronicApp',
+ files: [
+ '/controllers/GeneralPageController.js'
+ ]
+ }]);
+ }]
+ }
+ })
+ 
+ // Tree View
+ .state('tree', {
+ url: "/tree",
+ templateUrl: "/views/tree.html",
+ data: {pageTitle: 'jQuery Tree View', pageSubTitle: 'tree view samples'},
+ controller: "GeneralPageController",
+ resolve: {
+ deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+ return $ocLazyLoad.load([{
+ name: 'MetronicApp',
+ insertBefore: '#ng_load_plugins_before', // load the above css files before '#ng_load_plugins_before'
+ files: [
+ '/assets/global/plugins/jstree/dist/themes/default/style.min.css',
+ '/assets/global/plugins/jstree/dist/jstree.min.js',
+ '/assets/admin/pages/scripts/ui-tree.js',
+ '/controllers/GeneralPageController.js'
+ ]
+ }]);
+ }]
+ }
+ })
+ 
+ // Form Tools
+ .state('formtools', {
+ url: "/form-tools",
+ templateUrl: "/views/form_tools.html",
+ data: {pageTitle: 'Form Tools', pageSubTitle: 'form components & widgets sample'},
+ controller: "GeneralPageController",
+ resolve: {
+ deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+ return $ocLazyLoad.load([{
+ name: 'MetronicApp',
+ insertBefore: '#ng_load_plugins_before', // load the above css files before '#ng_load_plugins_before'
+ files: [
+ '/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css',
+ '/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css',
+ '/assets/global/plugins/jquery-tags-input/jquery.tagsinput.css',
+ '/assets/global/plugins/bootstrap-markdown/css/bootstrap-markdown.min.css',
+ '/assets/global/plugins/typeahead/typeahead.css',
+ '/assets/global/plugins/fuelux/js/spinner.min.js',
+ '/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js',
+ '/assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js',
+ '/assets/global/plugins/jquery.input-ip-address-control-1.0.min.js',
+ '/assets/global/plugins/bootstrap-pwstrength/pwstrength-bootstrap.min.js',
+ '/assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js',
+ '/assets/global/plugins/jquery-tags-input/jquery.tagsinput.min.js',
+ '/assets/global/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js',
+ '/assets/global/plugins/bootstrap-touchspin/bootstrap.touchspin.js',
+ '/assets/global/plugins/typeahead/handlebars.min.js',
+ '/assets/global/plugins/typeahead/typeahead.bundle.min.js',
+ '/assets/admin/pages/scripts/components-form-tools.js',
+ '/controllers/GeneralPageController.js'
+ ]
+ }]);
+ }]
+ }
+ })
+ 
+ // Date & Time Pickers
+ .state('pickers', {
+ url: "/pickers",
+ templateUrl: "/views/pickers.html",
+ data: {pageTitle: 'Date & Time Pickers', pageSubTitle: 'date, time, color, daterange pickers'},
+ controller: "GeneralPageController",
+ resolve: {
+ deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+ return $ocLazyLoad.load([{
+ name: 'MetronicApp',
+ insertBefore: '#ng_load_plugins_before', // load the above css files before '#ng_load_plugins_before'
+ files: [
+ '/assets/global/plugins/clockface/css/clockface.css',
+ '/assets/global/plugins/bootstrap-datepicker/css/datepicker3.css',
+ '/assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css',
+ '/assets/global/plugins/bootstrap-colorpicker/css/colorpicker.css',
+ '/assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css',
+ '/assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css',
+ '/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js',
+ '/assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js',
+ '/assets/global/plugins/clockface/js/clockface.js',
+ '/assets/global/plugins/bootstrap-daterangepicker/moment.min.js',
+ '/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js',
+ '/assets/global/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js',
+ '/assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js',
+ '/assets/admin/pages/scripts/components-pickers.js',
+ '/controllers/GeneralPageController.js'
+ ]
+ }]);
+ }]
+ }
+ })
+ 
+ // Custom Dropdowns
+ .state('dropdowns', {
+ url: "/dropdowns",
+ templateUrl: "/views/dropdowns.html",
+ data: {pageTitle: 'Custom Dropdowns', pageSubTitle: 'select2 & bootstrap select dropdowns'},
+ controller: "GeneralPageController",
+ resolve: {
+ deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+ return $ocLazyLoad.load([{
+ name: 'MetronicApp',
+ insertBefore: '#ng_load_plugins_before', // load the above css files before '#ng_load_plugins_before'
+ files: [
+ '/assets/global/plugins/bootstrap-select/bootstrap-select.min.css',
+ '/assets/global/plugins/select2/select2.css',
+ '/assets/global/plugins/jquery-multi-select/css/multi-select.css',
+ '/assets/global/plugins/bootstrap-select/bootstrap-select.min.js',
+ '/assets/global/plugins/select2/select2.min.js',
+ '/assets/global/plugins/jquery-multi-select/js/jquery.multi-select.js',
+ '/assets/admin/pages/scripts/components-dropdowns.js',
+ '/controllers/GeneralPageController.js'
+ ]
+ }]);
+ }]
+ }
+ })
+ 
+ // Advanced Datatables
+ .state('datatablesAdvanced', {
+ url: "/datatables/advanced.html",
+ templateUrl: "/views/datatables/advanced.html",
+ data: {pageTitle: 'Advanced Datatables', pageSubTitle: 'advanced datatables samples'},
+ controller: "GeneralPageController",
+ resolve: {
+ deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+ return $ocLazyLoad.load({
+ name: 'MetronicApp',
+ insertBefore: '#ng_load_plugins_before', // load the above css files before '#ng_load_plugins_before'
+ files: [
+ '/assets/global/plugins/select2/select2.css',
+ '/assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.css',
+ '/assets/global/plugins/datatables/extensions/Scroller/css/dataTables.scroller.min.css',
+ '/assets/global/plugins/datatables/extensions/ColReorder/css/dataTables.colReorder.min.css',
+ '/assets/global/plugins/select2/select2.min.js',
+ '/assets/global/plugins/datatables/all.min.js',
+ '/scripts/table-advanced.js',
+ '/controllers/GeneralPageController.js'
+ ]
+ });
+ }]
+ }
+ })
+ 
+ // Ajax Datetables
+ .state('datatablesAjax', {
+ url: "/datatables/ajax.html",
+ templateUrl: "/views/datatables/ajax.html",
+ data: {pageTitle: 'Ajax Datatables', pageSubTitle: 'ajax datatables samples'},
+ controller: "GeneralPageController",
+ resolve: {
+ deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+ return $ocLazyLoad.load({
+ name: 'MetronicApp',
+ insertBefore: '#ng_load_plugins_before', // load the above css files before '#ng_load_plugins_before'
+ files: [
+ '/assets/global/plugins/select2/select2.css',
+ '/assets/global/plugins/bootstrap-datepicker/css/datepicker.css',
+ '/assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.css',
+ '/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js',
+ '/assets/global/plugins/select2/select2.min.js',
+ '/assets/global/plugins/datatables/all.min.js',
+ '/assets/global/scripts/datatable.js',
+ '/scripts/table-ajax.js',
+ '/controllers/GeneralPageController.js'
+ ]
+ });
+ }]
+ }
+ })
+ 
+ // User Profile
+ .state("profile", {
+ url: "/profile",
+ templateUrl: "/views/profile/main.html",
+ data: {pageTitle: 'User Profile', pageSubTitle: 'user profile sample'},
+ controller: "UserProfileController",
+ resolve: {
+ deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+ return $ocLazyLoad.load({
+ name: 'MetronicApp',
+ insertBefore: '#ng_load_plugins_before', // load the above css files before '#ng_load_plugins_before'
+ files: [
+ '/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css',
+ '/assets/admin/pages/css/profile.css',
+ '/assets/admin/pages/css/tasks.css',
+ '/assets/global/plugins/jquery.sparkline.min.js',
+ '/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js',
+ '/assets/admin/pages/scripts/profile.js',
+ '/controllers/UserProfileController.js'
+ ]
+ });
+ }]
+ }
+ })
+ 
+ // User Profile Dashboard
+ .state("profile.dashboard", {
+ url: "/dashboard",
+ templateUrl: "views/profile/dashboard.html",
+ data: {pageTitle: 'User Profile'}
+ })
+ 
+ // User Profile Account
+ .state("profile.account", {
+ url: "/account",
+ templateUrl: "views/profile/account.html",
+ data: {pageTitle: 'User Account'}
+ })
+ 
+ // User Profile Help
+ .state("profile.help", {
+ url: "/help",
+ templateUrl: "views/profile/help.html",
+ data: {pageTitle: 'User Help'}      
+ })
+ 
+ // Todo
+ .state('todo', {
+ url: "/todo",
+ templateUrl: "views/todo.html",
+ data: {pageTitle: 'Todo'},
+ controller: "TodoController",
+ resolve: {
+ deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+ return $ocLazyLoad.load({
+ name: 'MetronicApp',
+ insertBefore: '#ng_load_plugins_before', // load the above css files before '#ng_load_plugins_before'
+ files: [
+ '/assets/global/plugins/bootstrap-datepicker/css/datepicker3.css',
+ '/assets/global/plugins/select2/select2.css',
+ '/assets/admin/pages/css/todo.css',
+ '/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js',
+ '/assets/global/plugins/select2/select2.min.js',
+ '/assets/admin/pages/scripts/todo.js',
+ '/controllers/TodoController.js'
+ ]
+ });
+ }]
+ }
+ 
+ })*/
+});
+=======
         .state('home', {
             url: "/",
             templateUrl: "/views/home/index.html",
@@ -664,6 +1161,7 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
             data: {
                 pageTitle: 'Nouvel article'
             },
+<<<<<<< HEAD
             controller: "ArticleController"
         })
         /*
@@ -975,17 +1473,350 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
          
          })*/
     ;
+=======
+            controller: "StockController"
+
+                .state('article.show', {
+                    parent: 'article',
+                    url: "/{id:[0-9a-z]{24}}",
+                    templateUrl: "/views/article/fiche.html",
+                    data: {
+                        pageTitle: 'Article'
+                    },
+                    controller: "ArticleController"
+                })
+                .state('article.create', {
+                    parent: "article",
+                    url: "/create.html",
+                    templateUrl: "/views/article/fiche.html",
+                    data: {
+                        pageTitle: 'Nouvel article'
+                    },
+                    controller: "ArticleController"
+
+                })
+                /*
+                 // AngularJS plugins
+                 .state('fileupload', {
+                 url: "/file_upload.html",
+                 templateUrl: "/views/file_upload.html",
+                 data: {pageTitle: 'AngularJS File Upload', pageSubTitle: 'angularjs file upload'},
+                 controller: "GeneralPageController",
+                 resolve: {
+                 deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+                 return $ocLazyLoad.load([{
+                 name: 'angularFileUpload',
+                 files: [
+                 '/assets/global/plugins/angularjs/plugins/angular-file-upload/angular-file-upload.min.js'
+                 ]
+                 }, {
+                 name: 'MetronicApp',
+                 files: [
+                 '/controllers/GeneralPageController.js'
+                 ]
+                 }]);
+                 }]
+                 }
+                 })
+                 
+                 // UI Select
+                 .state('uiselect', {
+                 url: "/ui_select.html",
+                 templateUrl: "/views/ui_select.html",
+                 data: {pageTitle: 'AngularJS Ui Select', pageSubTitle: 'select2 written in angularjs'},
+                 controller: "UISelectController",
+                 resolve: {
+                 deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+                 return $ocLazyLoad.load([{
+                 name: 'ui.select',
+                 insertBefore: '#ng_load_plugins_before', // load the above css files before '#ng_load_plugins_before'
+                 files: [
+                 '/assets/global/plugins/angularjs/plugins/ui-select/select.min.css',
+                 '/assets/global/plugins/angularjs/plugins/ui-select/select.min.js'
+                 ]
+                 }, {
+                 name: 'MetronicApp',
+                 files: [
+                 '/controllers/UISelectController.js'
+                 ]
+                 }]);
+                 }]
+                 }
+                 })
+                 
+                 // UI Bootstrap
+                 .state('uibootstrap', {
+                 url: "/ui_bootstrap.html",
+                 templateUrl: "/views/ui_bootstrap.html",
+                 data: {pageTitle: 'AngularJS UI Bootstrap', pageSubTitle: 'bootstrap components written in angularjs'},
+                 controller: "GeneralPageController",
+                 resolve: {
+                 deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+                 return $ocLazyLoad.load([{
+                 name: 'MetronicApp',
+                 files: [
+                 '/controllers/GeneralPageController.js'
+                 ]
+                 }]);
+                 }]
+                 }
+                 })
+                 
+                 // Tree View
+                 .state('tree', {
+                 url: "/tree",
+                 templateUrl: "/views/tree.html",
+                 data: {pageTitle: 'jQuery Tree View', pageSubTitle: 'tree view samples'},
+                 controller: "GeneralPageController",
+                 resolve: {
+                 deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+                 return $ocLazyLoad.load([{
+                 name: 'MetronicApp',
+                 insertBefore: '#ng_load_plugins_before', // load the above css files before '#ng_load_plugins_before'
+                 files: [
+                 '/assets/global/plugins/jstree/dist/themes/default/style.min.css',
+                 '/assets/global/plugins/jstree/dist/jstree.min.js',
+                 '/assets/admin/pages/scripts/ui-tree.js',
+                 '/controllers/GeneralPageController.js'
+                 ]
+                 }]);
+                 }]
+                 }
+                 })
+                 
+                 // Form Tools
+                 .state('formtools', {
+                 url: "/form-tools",
+                 templateUrl: "/views/form_tools.html",
+                 data: {pageTitle: 'Form Tools', pageSubTitle: 'form components & widgets sample'},
+                 controller: "GeneralPageController",
+                 resolve: {
+                 deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+                 return $ocLazyLoad.load([{
+                 name: 'MetronicApp',
+                 insertBefore: '#ng_load_plugins_before', // load the above css files before '#ng_load_plugins_before'
+                 files: [
+                 '/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css',
+                 '/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css',
+                 '/assets/global/plugins/jquery-tags-input/jquery.tagsinput.css',
+                 '/assets/global/plugins/bootstrap-markdown/css/bootstrap-markdown.min.css',
+                 '/assets/global/plugins/typeahead/typeahead.css',
+                 '/assets/global/plugins/fuelux/js/spinner.min.js',
+                 '/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js',
+                 '/assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js',
+                 '/assets/global/plugins/jquery.input-ip-address-control-1.0.min.js',
+                 '/assets/global/plugins/bootstrap-pwstrength/pwstrength-bootstrap.min.js',
+                 '/assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js',
+                 '/assets/global/plugins/jquery-tags-input/jquery.tagsinput.min.js',
+                 '/assets/global/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js',
+                 '/assets/global/plugins/bootstrap-touchspin/bootstrap.touchspin.js',
+                 '/assets/global/plugins/typeahead/handlebars.min.js',
+                 '/assets/global/plugins/typeahead/typeahead.bundle.min.js',
+                 '/assets/admin/pages/scripts/components-form-tools.js',
+                 '/controllers/GeneralPageController.js'
+                 ]
+                 }]);
+                 }]
+                 }
+                 })
+                 
+                 // Date & Time Pickers
+                 .state('pickers', {
+                 url: "/pickers",
+                 templateUrl: "/views/pickers.html",
+                 data: {pageTitle: 'Date & Time Pickers', pageSubTitle: 'date, time, color, daterange pickers'},
+                 controller: "GeneralPageController",
+                 resolve: {
+                 deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+                 return $ocLazyLoad.load([{
+                 name: 'MetronicApp',
+                 insertBefore: '#ng_load_plugins_before', // load the above css files before '#ng_load_plugins_before'
+                 files: [
+                 '/assets/global/plugins/clockface/css/clockface.css',
+                 '/assets/global/plugins/bootstrap-datepicker/css/datepicker3.css',
+                 '/assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css',
+                 '/assets/global/plugins/bootstrap-colorpicker/css/colorpicker.css',
+                 '/assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css',
+                 '/assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css',
+                 '/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js',
+                 '/assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js',
+                 '/assets/global/plugins/clockface/js/clockface.js',
+                 '/assets/global/plugins/bootstrap-daterangepicker/moment.min.js',
+                 '/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js',
+                 '/assets/global/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js',
+                 '/assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js',
+                 '/assets/admin/pages/scripts/components-pickers.js',
+                 '/controllers/GeneralPageController.js'
+                 ]
+                 }]);
+                 }]
+                 }
+                 })
+                 
+                 // Custom Dropdowns
+                 .state('dropdowns', {
+                 url: "/dropdowns",
+                 templateUrl: "/views/dropdowns.html",
+                 data: {pageTitle: 'Custom Dropdowns', pageSubTitle: 'select2 & bootstrap select dropdowns'},
+                 controller: "GeneralPageController",
+                 resolve: {
+                 deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+                 return $ocLazyLoad.load([{
+                 name: 'MetronicApp',
+                 insertBefore: '#ng_load_plugins_before', // load the above css files before '#ng_load_plugins_before'
+                 files: [
+                 '/assets/global/plugins/bootstrap-select/bootstrap-select.min.css',
+                 '/assets/global/plugins/select2/select2.css',
+                 '/assets/global/plugins/jquery-multi-select/css/multi-select.css',
+                 '/assets/global/plugins/bootstrap-select/bootstrap-select.min.js',
+                 '/assets/global/plugins/select2/select2.min.js',
+                 '/assets/global/plugins/jquery-multi-select/js/jquery.multi-select.js',
+                 '/assets/admin/pages/scripts/components-dropdowns.js',
+                 '/controllers/GeneralPageController.js'
+                 ]
+                 }]);
+                 }]
+                 }
+                 })
+                 
+                 // Advanced Datatables
+                 .state('datatablesAdvanced', {
+                 url: "/datatables/advanced.html",
+                 templateUrl: "/views/datatables/advanced.html",
+                 data: {pageTitle: 'Advanced Datatables', pageSubTitle: 'advanced datatables samples'},
+                 controller: "GeneralPageController",
+                 resolve: {
+                 deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+                 return $ocLazyLoad.load({
+                 name: 'MetronicApp',
+                 insertBefore: '#ng_load_plugins_before', // load the above css files before '#ng_load_plugins_before'
+                 files: [
+                 '/assets/global/plugins/select2/select2.css',
+                 '/assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.css',
+                 '/assets/global/plugins/datatables/extensions/Scroller/css/dataTables.scroller.min.css',
+                 '/assets/global/plugins/datatables/extensions/ColReorder/css/dataTables.colReorder.min.css',
+                 '/assets/global/plugins/select2/select2.min.js',
+                 '/assets/global/plugins/datatables/all.min.js',
+                 '/scripts/table-advanced.js',
+                 '/controllers/GeneralPageController.js'
+                 ]
+                 });
+                 }]
+                 }
+                 })
+                 
+                 // Ajax Datetables
+                 .state('datatablesAjax', {
+                 url: "/datatables/ajax.html",
+                 templateUrl: "/views/datatables/ajax.html",
+                 data: {pageTitle: 'Ajax Datatables', pageSubTitle: 'ajax datatables samples'},
+                 controller: "GeneralPageController",
+                 resolve: {
+                 deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+                 return $ocLazyLoad.load({
+                 name: 'MetronicApp',
+                 insertBefore: '#ng_load_plugins_before', // load the above css files before '#ng_load_plugins_before'
+                 files: [
+                 '/assets/global/plugins/select2/select2.css',
+                 '/assets/global/plugins/bootstrap-datepicker/css/datepicker.css',
+                 '/assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.css',
+                 '/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js',
+                 '/assets/global/plugins/select2/select2.min.js',
+                 '/assets/global/plugins/datatables/all.min.js',
+                 '/assets/global/scripts/datatable.js',
+                 '/scripts/table-ajax.js',
+                 '/controllers/GeneralPageController.js'
+                 ]
+                 });
+                 }]
+                 }
+                 })
+                 
+                 // User Profile
+                 .state("profile", {
+                 url: "/profile",
+                 templateUrl: "/views/profile/main.html",
+                 data: {pageTitle: 'User Profile', pageSubTitle: 'user profile sample'},
+                 controller: "UserProfileController",
+                 resolve: {
+                 deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+                 return $ocLazyLoad.load({
+                 name: 'MetronicApp',
+                 insertBefore: '#ng_load_plugins_before', // load the above css files before '#ng_load_plugins_before'
+                 files: [
+                 '/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css',
+                 '/assets/admin/pages/css/profile.css',
+                 '/assets/admin/pages/css/tasks.css',
+                 '/assets/global/plugins/jquery.sparkline.min.js',
+                 '/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js',
+                 '/assets/admin/pages/scripts/profile.js',
+                 '/controllers/UserProfileController.js'
+                 ]
+                 });
+                 }]
+                 }
+                 })
+                 
+                 // User Profile Dashboard
+                 .state("profile.dashboard", {
+                 url: "/dashboard",
+                 templateUrl: "views/profile/dashboard.html",
+                 data: {pageTitle: 'User Profile'}
+                 })
+                 
+                 // User Profile Account
+                 .state("profile.account", {
+                 url: "/account",
+                 templateUrl: "views/profile/account.html",
+                 data: {pageTitle: 'User Account'}
+                 })
+                 
+                 // User Profile Help
+                 .state("profile.help", {
+                 url: "/help",
+                 templateUrl: "views/profile/help.html",
+                 data: {pageTitle: 'User Help'}      
+                 })
+                 
+                 // Todo
+                 .state('todo', {
+                 url: "/todo",
+                 templateUrl: "views/todo.html",
+                 data: {pageTitle: 'Todo'},
+                 controller: "TodoController",
+                 resolve: {
+                 deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+                 return $ocLazyLoad.load({
+                 name: 'MetronicApp',
+                 insertBefore: '#ng_load_plugins_before', // load the above css files before '#ng_load_plugins_before'
+                 files: [
+                 '/assets/global/plugins/bootstrap-datepicker/css/datepicker3.css',
+                 '/assets/global/plugins/select2/select2.css',
+                 '/assets/admin/pages/css/todo.css',
+                 '/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js',
+                 '/assets/global/plugins/select2/select2.min.js',
+                 '/assets/admin/pages/scripts/todo.js',
+                 '/controllers/TodoController.js'
+                 ]
+                 });
+                 }]
+                 }
+                 
+                 })*/
+        });
+>>>>>>> be02be3e52b3852590c12ff4f3577dfa8a9b7196
+>>>>>>> 00f0db1351485f4fc4046702a6cba079dcf86d35
 }]);
 /* Init global settings and run the app */
 MetronicApp.run(["$rootScope", "settings", "$state",
-    function($rootScope, settings, $state) {
+    function ($rootScope, settings, $state) {
         $rootScope.$state = $state; // state to be accessed from view
     }
 ]);
 
 MetronicApp.run(
     ['$window', '$rootScope', '$state', '$stateParams',
-        function($window, $rootScope, $state, $stateParams) {
+        function ($window, $rootScope, $state, $stateParams) {
             // It's very handy to add references to $state and $stateParams to the $rootScope
             // so that you can access them from any scope within your applications.For example,
             // <li ng-class="{ active: $state.includes('contacts.list') }"> will set the <li>
@@ -993,7 +1824,7 @@ MetronicApp.run(
             $rootScope.$state = $state;
             $rootScope.$stateParams = $stateParams;
 
-            $rootScope.goBack = function() {
+            $rootScope.goBack = function () {
                 $window.history.back();
             };
 
@@ -1001,7 +1832,7 @@ MetronicApp.run(
     ]);
 
 MetronicApp.run(['editableOptions', 'editableThemes',
-    function(editableOptions, editableThemes) {
+    function (editableOptions, editableThemes) {
         // bootstrap3 theme. Can be also 'bs2', 'default'
         editableThemes.bs3.inputClass = 'input-sm';
         editableThemes.bs3.buttonsClass = 'btn-sm';
@@ -1011,7 +1842,7 @@ MetronicApp.run(['editableOptions', 'editableThemes',
 
 // For dialog box
 MetronicApp.config(['dialogsProvider', '$translateProvider',
-    function(dialogsProvider, $translateProvider) {
+    function (dialogsProvider, $translateProvider) {
         dialogsProvider.useBackdrop('static');
         dialogsProvider.useEscClose(true);
         dialogsProvider.useCopy(false);
@@ -1039,8 +1870,8 @@ MetronicApp.config(['dialogsProvider', '$translateProvider',
 ]);
 
 // results in ($10.00) rather than -$10.00
-MetronicApp.config(['$provide', function($provide) {
-    $provide.decorator('$locale', ['$delegate', function($delegate) {
+MetronicApp.config(['$provide', function ($provide) {
+    $provide.decorator('$locale', ['$delegate', function ($delegate) {
         //if($delegate.id == 'fr-fr') {
         $delegate.NUMBER_FORMATS.PATTERNS[1].negPre = '-';
         $delegate.NUMBER_FORMATS.PATTERNS[1].negSuf = ' \u00A4';
