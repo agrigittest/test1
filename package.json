@@ -4,8 +4,10 @@
   "version": "1.0.0",
   "repository": "totaljs/examples",
   "dependencies": {
-    "total.js": "latest",
-    "mongoose": "~4.9"
+    "async": "^2.5.0",
+    "lodash": "^4.17.4",
+    "mongoose": "~4.9",
+    "total.js": "latest"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
